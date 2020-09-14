@@ -73,7 +73,7 @@ public class GZ_ScreenshotsAndImageSequences : MonoBehaviour
                 realFilename = filename + "-" + count;
                 count++;
             }
-            ScreenCapture.CaptureScreenshot(realFilename + ".png", 2);
+            ScreenCapture.CaptureScreenshot(realFilename + ".png", 2); // double resolution!
         }
 
         // toggle recording with e.g. F4

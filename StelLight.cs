@@ -12,7 +12,7 @@
    In Unity editor, Create New Gameobject: Light->Directional. Name it "StelLight" so it will be found automatically by other components of the Stellarium/Unity bridge modules.
    Add this script as property of a Game.
    Set the directories to those used by Stellarium (Usually, C:\Users\YOU\Pictures\Stellarium\ and C:\Users\YOU\AppData\Roaming\Stellarium)
-   Assign a Flare: StelFlare with Flare Texture: Default-Particle, Texture Layout 1 Large 4 Small
+   Assign Flares, e.g. from StandardAssets 50mm for Sun and Moon, Star for Venus
    Create a directional Light (we call it Shadowmaker) in the "scene root" with the same Flare and "Draw Halo". Assign this to the SunLightObj in the script. 
    This light will be fed with position data from Stellarium. If it does not exist, a default directional light (without Flare) will be created.
 */
