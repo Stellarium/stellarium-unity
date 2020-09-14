@@ -17,8 +17,8 @@
    Put Skybox textures (512^2) into subdirectories in Assets/StreamingAssets/SkyBoxes folder and configure in skyboxes.json there. 
    NEW VARIANT: A set of prepared skyboxes should be in Assets/StreamingAssets/<name>/Unity*.png + unityData.txt. 
 
-   TODO: Allow Skybox Rotation angle to compensate for meridian convergence issues. This is a site property and should be set (or value retrieved) from StelController.
-   
+   2018-02-02: Allow Skybox Rotation angle to compensate for meridian convergence issues. This is a site property and should be set (or value retrieved) from StelController. Requires Unity5+.
+   2020-04-08: Restore auto-loading of "live" skybox.
  */
 using UnityEngine;
 using UnityEngine.Networking;
@@ -43,8 +43,12 @@ public class StreamingSkybox : MonoBehaviour {
     private JSONObject jsonMoonInfo;  // a small JSON that contains data about Moon  from the unityData.txt. 
     private JSONObject jsonVenusInfo; // a small JSON that contains data about Venus from the unityData.txt. 
     private StelController controller; // needed for location details (rotation)
-    // Currently we don't use it, but this can change. 
-    // It would be better to add the light info handling to the skyboxes and just get them in the StelController.
+                                       // Currently we don't use it, but this can change. 
+                                       // It would be better to add the light info handling to the skyboxes and just get them in the StelController.
+
+#if !UNITY_WEBGL
+    FileSystemWatcher watcher;          // The watcher is used to check for updates in the skybox tiles directory. As soon as a new skybox has been generated, Skybox and SunLight will be updated. 
+#endif
 
     private void Awake()
     {
@@ -59,6 +63,9 @@ public class StreamingSkybox : MonoBehaviour {
         pathBase = System.IO.Path.Combine(Application.streamingAssetsPath, "SkyBoxes/");
         Debug.Log("StreamingSkybox: pathbase=" + pathBase);
         controller = gameObject.GetComponent<StelController>();
+#if !UNITY_WEBGL
+        watcher = new FileSystemWatcher();
+#endif
     }
 
     private void Start()
@@ -71,6 +78,13 @@ public class StreamingSkybox : MonoBehaviour {
 #if UNITY_WEBGL
         StartCoroutine(DoGetImages(SkydataPath));
 #else
+        watcher.Path = pathBase + "live/";
+        watcher.NotifyFilter = NotifyFilters.LastWrite;
+        watcher.Filter = "unityData.txt"; // "Unity6-bottom.png"; // maybe even better: unityData.txt ?
+        watcher.Changed += OnLiveDirectoryChanged;
+        watcher.Created += OnLiveDirectoryChanged;
+        watcher.EnableRaisingEvents = true;
+
         DoOnMainThread.ExecuteOnMainThread.Enqueue(() => { StartCoroutine(DoGetImages(SkydataPath)); });
 #endif
         StartCoroutine(ParseDataFile());
@@ -78,6 +92,20 @@ public class StreamingSkybox : MonoBehaviour {
 
     void OnDisable()
     {
+#if !UNITY_WEBGL
+        watcher.Changed -= OnLiveDirectoryChanged;
+        watcher.Created -= OnLiveDirectoryChanged;
+        watcher.EnableRaisingEvents = false;
+#endif
+    }
+
+    void OnLiveDirectoryChanged(object source, FileSystemEventArgs e)
+    {
+        if (skyName == "live")
+        {
+            DoOnMainThread.ExecuteOnMainThread.Enqueue(() => { StartCoroutine(DoGetImages(SkydataPath)); });
+            DoOnMainThread.ExecuteOnMainThread.Enqueue(() => { StartCoroutine(ParseDataFile()); });
+        }
     }
 
     private Material CreateSkyboxMaterial(Dictionary<string, Texture2D> sides)
@@ -156,7 +184,6 @@ public class StreamingSkybox : MonoBehaviour {
         Texture2D texture = Texture2D.whiteTexture; // new Texture2D(2, 2, TextureFormat.BGRA32, true);
         //Debug.Log("Filenames dictionary has " + filenames.Count + " entries");
         foreach (string filename in filenames) {
-			//string filePath=pathBase+skyName+"/"+filename;
             string filePath = System.IO.Path.Combine(directory, filename);
             //Debug.Log("Trying to get image " + filePath);
 			
