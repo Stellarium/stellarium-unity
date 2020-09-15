@@ -150,12 +150,12 @@ Set some Flares for Sun, Moon and Venus (optional).
 Used in Spout mode to transfer the view direction from Unity to Stellarium. 
 Stellarium does not like to look into the zenith/nadir. In your First Person Controller (e.g. Unity's FPSController prefab), limit the MouseLook X range to -89..+89. 
 
-###StelMouseZoom: 
+### StelMouseZoom: 
 
 Zooms the camera with mouse wheel, and can transfer the Field of View to Stellarium (in Spout mode). 
 
 
-###StelSkyBox: (DEPRECATED. Not good for new projects.)
+### StelSkyBox: (DEPRECATED. Not good for new projects.)
 
 * Detects updates in the rendered Skybox tiles, updates the skybox. 
 * Slow interface, because we are using files (6xPNG plus a text file) written by Stellarium.
@@ -184,23 +184,23 @@ Examples for hotkey configuration:
 * F11: Render new skybox tiles into the "live" directory. To see that sky, use "0". 
 * F12: Toggle Spout/Skybox mode. 
 * Like in Stellarium: 
- * J slower 
- * K stop
- * L faster
- * U Toggle ArchaeoLines
- * T Toggle aTmosphere (A in Stellarium, but WASD are motion keys.)
- * Q Toggle Cardinals
- * G Toggle Ground
- * C Constellation lines
- * V Constellation labels
- * R Constellation artwork 
- * B Constellation Boundaries
- * E Equatorial Grid
- * Z Horizontal Grid
- * H Horizon Line
- * M Meridian Line
- * Comma Ecliptic Line
- * Period Equator Line
+   - J slower 
+   - K stop
+   - L faster
+   - U Toggle ArchaeoLines
+   - T Toggle aTmosphere (A in Stellarium, but WASD are motion keys.)
+   - Q Toggle Cardinals
+   - G Toggle Ground
+   - C Constellation lines
+   - V Constellation labels
+   - R Constellation artwork 
+   - B Constellation Boundaries
+   - E Equatorial Grid
+   - Z Horizontal Grid
+   - H Horizon Line
+   - M Meridian Line
+   - Comma Ecliptic Line
+   - Period Equator Line
 * Num4 Toggle enlarging the Moon
 * Num8 Time="Now"
 
@@ -215,7 +215,7 @@ Download Spout4Unity from <https://github.com/sloopidoopi/Spout4Unity>. Just mak
 Close Unity and Visual Studio. Make a backup of your Unity project, just in case :-) 
 From the Spout repository Spout4Unity, copy Assets/Plugins and Assets/Spout to the Assets Folder. Delete/do not copy Assets/Spout/Scenes.
 
-###Ad-Hoc Bugfixes in a Unity5.4 environment:
+### Ad-Hoc Bugfixes in a Unity5.4 environment:
 
 Scripts/Spout.cs: Enclose lines 107 with:
 
@@ -235,7 +235,8 @@ For a 2017 Version is was necessary to also replace line 22 in Scripts/InvertCam
 
 ### Aligning a "background canvas" with the camera
 
-* Based on using the Default: Import Unity Package: Characters : FirstPersonCharacter
+Based on using the Default: Import Unity Package: Characters : FirstPersonCharacter
+
  * Create a new GameObject as child of your FPS camera: 
  * Create Empty 3D Object: Quad. Call it "StelBackground".
  * Transform: Pos 0/0/10, Scale 16/-9/1. (Assume 16:9 screen 10m in front of the camera for now. We need to invert Y! scale.Z is likely irrelevant.)
