@@ -89,7 +89,7 @@ Prepare Assets/StreamingAssets/SkyBoxes directory with subdirectories for each p
 # Fully Manual setup
 If you want to recreate a more manual Installation, to learn how the things work together, read on.
 
-##Retrieve these sources
+## Retrieve these sources
 
 Use git directly in your Assets Folder:
 
