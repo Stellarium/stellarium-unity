@@ -31,8 +31,8 @@ using System.Collections.Generic;
 public class StreamingSkybox : MonoBehaviour {
 
     [Tooltip("Subdirectory name in StreamingAssets folder")]
-    public string defaultSkyname = "2";
-    private string skyName = "1";  // subdir of StreamingAssets/SkyBoxes/ where the images written by Stellarium have been moved. 
+    public string defaultSkyname = "live";
+    private string skyName = "live";  // subdir of StreamingAssets/SkyBoxes/ where the images written by Stellarium have been moved. 
 
     private Dictionary<string, Texture2D> sides = new Dictionary<string, Texture2D>(); // private dictionary for Material creation.
 

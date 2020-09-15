@@ -1026,7 +1026,7 @@ public class StelController : MonoBehaviour {
                 return jsonVenusInfo;
             }
             JSONObject ambientLightInfo = new JSONObject();
-            ambientLightInfo.AddField("ambientInt", jsonSunInfo["ambientInt"].n);
+            ambientLightInfo.AddField("ambientInt", val: jsonSunInfo["ambientInt"].n);
             ambientLightInfo.AddField("name", "none");
             return ambientLightInfo;
         }
