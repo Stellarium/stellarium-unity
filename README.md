@@ -81,6 +81,8 @@ After installation of the unitypackage, we have a few new directories:
  - The Assets/Spout folder and its parts in the Plugins folder (BSD-2 license, please see its project website for details.)
  - The Assets/JSONobject folder (3rd party, MIT license. Please see it for details.) 
 
+Drag the Stellarium and FPSController prefabs from Assets/stellarium-unity into your scene.
+
 Prepare Assets/StreamingAssets/SkyBoxes directory with subdirectories for each preconfigured skybox snapshots, esp. a "live" folder, or install some StelSkyboxes.unitypackage.
 
 
@@ -100,14 +102,26 @@ The API is documented at http://www.stellarium.org/doc/head/remoteControlApi.htm
 
 Stellarium 0.18.1+ includes a skybox generation script designed to work together with the StelSkybox.cs and StreamingSkybox.cs Unity scripts.
 To properly work with the HTTP, we also need a JSON parser class. 
-For Unity, we use this free one:  https://assetstore.unity.com/packages/tools/input-management/json-object-710, also available at https://github.com/mtschoen/JSONObject
+For Unity, we use this free one:  <https://assetstore.unity.com/packages/tools/input-management/json-object-710>, also available at <https://github.com/mtschoen/JSONObject>
 
 This has to be installed to Assets/JSONobject. Again in your Assets directory:
 
 >git clone https://github.com/mtschoen/JSONObject
 
 CAUTION: You must deactivate the #define USEFLOAT in Assets/JSONobject/JSONObject.cs line 3 -  we need double!
-         This also requires insertion of 4 (float) casts into lines 220-222 of Assets/JSON/VectorTemplates.cs (UPDATE 2020: No longer!)
+
+In Addition, we must add two Methods:
+
+    public static JSONObject Create(double val)
+    {
+        JSONObject obj = Create();
+        obj.type = Type.NUMBER;
+        obj.n = val;
+        return obj;
+    }
+    public void AddField(string name, double val) {
+        AddField(name, Create(val));
+    }
 
 ## Setting up the Stellarium Controller
 
@@ -119,7 +133,11 @@ Attach the following classes from the Assets/Stellarium folder:
 
 ### StelLight: 
 
-responsible for configuring the Light component to represent Sun, Moon or Venus as light sources.
+Responsible for configuring the Light component to represent Sun, Moon or Venus as light sources.
+
+Assets->Import Package: Effects: We need the LightFlares (or make your own)
+
+Set some Flares for Sun, Moon and Venus (optional).
 
 ### StelController: 
 
@@ -137,7 +155,7 @@ Stellarium does not like to look into the zenith/nadir. In your First Person Con
 Zooms the camera with mouse wheel, and can transfer the Field of View to Stellarium (in Spout mode). 
 
 
-###StelSkyBox: (DEPRECATED)
+###StelSkyBox: (DEPRECATED. Not good for new projects.)
 
 * Detects updates in the rendered Skybox tiles, updates the skybox. 
 * Slow interface, because we are using files (6xPNG plus a text file) written by Stellarium.
@@ -151,6 +169,8 @@ Zooms the camera with mouse wheel, and can transfer the Field of View to Stellar
 * Stellarium writes to %STEL\_SKYBOX\_DIR%, which may be something like D:\MyWorks\StellariumUnitySkybox\StellariumSkybox\Assets\StreamingAssets\SkyBoxes\live* 
  * Preconfigured skyboxes should be located in other subdirs of D:\MyWorks\StellariumUnitySkybox\StellariumSkybox\Assets\StreamingAssets\SkyBoxes
  * At runtime, change env. variable %STEL\_SKYBOX\_DIR% to something like D:\MyUnityApp\StreamingAssets\SkyBoxes\live
+* **Note** You must run the skybox.ssc script once from Stellarium to have working skybox data. 
+* **Note** Make sure you have configured Stellarium to create PNG screenshots.
 
 
 ### StelKeyboardTriggers:  
@@ -187,8 +207,8 @@ Examples for hotkey configuration:
 
 ## Setting up a Spout-filled Background
 
-Setup Spout from https://spout.zeal.co. Maybe not required but helpful to have it for testing Stellarium's output with a "neutral" SpoutReceiver.
-Download Spout4Unity from https://github.com/sloopidoopi/Spout4Unity. Just make a ZIP snapshot from the git, or clone with git outside of your Unity Project,
+Setup Spout from <https://spout.zeal.co>. Maybe not required but helpful to have it for testing Stellarium's output with a "neutral" SpoutReceiver.
+Download Spout4Unity from <https://github.com/sloopidoopi/Spout4Unity>. Just make a ZIP snapshot from the git, or clone with git outside of your Unity Project,
 
 > git clone https://github.com/sloopidoopi/Spout4Unity
 
@@ -215,18 +235,19 @@ For a 2017 Version is was necessary to also replace line 22 in Scripts/InvertCam
 
 ### Aligning a "background canvas" with the camera
 
-* Create a new GameObject as child of your FPS camera: 
-* Create Empty 3D Object: Quad. Call it "StelBackground".
-* Transform: Pos 0/0/10, Scale 16/-9/1. (Assume 16:9 screen 10m in front of the camera for now. We need to invert Y! scale.Z is likely irrelevant.)
-* Remove the automatically created Mesh Collider. 
-* MeshRenderer settings: Cast shadows: Off. Receive Shadows: No. Motion Vectors: No(?)  
-* Add the SpoutReceiver script (from Assets/Spout/Scripts), select sender: stellarium (or "any" if you don't have another).  
-* Replace the default Material by Unlit.0 from Assets/Spout/Materials. Then change the Shader to Stellarium/Unlit-TextureBackground.
-* Add the Stellarium/StelBackgroundMaterial script to the StelBackground GameObject. This ensures that the panel is scaled to fill the vertical field of view to be the same as Stellarium. 
-* In the usual application case, a fullscreen Stellarium will be mapped to a fullscreen Unity, seamlessly and without resampling losses. Changing view direction with the mouse will show a slight lag (0.15s?). This should be acceptable for a research-grade application. 
+* Based on using the Default: Import Unity Package: Characters : FirstPersonCharacter
+ * Create a new GameObject as child of your FPS camera: 
+ * Create Empty 3D Object: Quad. Call it "StelBackground".
+ * Transform: Pos 0/0/10, Scale 16/-9/1. (Assume 16:9 screen 10m in front of the camera for now. We need to invert Y! scale.Z is likely irrelevant.)
+ * Remove the automatically created Mesh Collider. 
+ * MeshRenderer settings: Cast shadows: Off. Receive Shadows: No. Motion Vectors: No(?)  
+ * Add the SpoutReceiver script (from Assets/Spout/Scripts), select sender: stellarium (or "any" if you don't have another).  
+ * Replace the default Material by Unlit.0 from Assets/Spout/Materials. Then change the Shader to Stellarium/Unlit-TextureBackground.
+ * Add the Stellarium/StelBackgroundMaterial script to the StelBackground GameObject. This ensures that the panel is scaled to fill the vertical field of view to be the same as Stellarium. 
+ * In the usual application case, a fullscreen Stellarium will be mapped to a fullscreen Unity, seamlessly and without resampling losses. Changing view direction with the mouse will show a slight lag (0.15s?). This should be acceptable for a research-grade application. 
 
 
-https://forum.unity3d.com/threads/subshader-with-zwrite-off-visible-in-scene-view-but-not-in-game-preview.269379/ describes issues with rendering a background object with the skybox. 
+<https://forum.unity3d.com/threads/subshader-with-zwrite-off-visible-in-scene-view-but-not-in-game-preview.269379/> describes issues with rendering a background object with the skybox. 
 
 Works in editor, but not in Game view, because skybox is apparently rendered after the scene (fills pixels with empty zbuffer values only).
 Therefore we have a modified shader rendering the Spout texture to Background, and the camera must be switched to CameraClearFlags.Depth.
@@ -251,4 +272,4 @@ License
 
 We make this package available for collaborating research in archaeoastronomy and cultural astronomy, which should lead to collaborative publications. 
 
-Released September 14, 2020 under GPLv3. 
+Released September 15, 2020 under GPLv3. 
