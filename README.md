@@ -262,8 +262,7 @@ The hotkeys defined in StelKeyboardTriggers.cs work, but are limited and need to
 References
 ========
 
-Publications should be listed here.
-Possible submissions:
+In press:
 
 - Georg Zotti. A Virtual Park of Astronomical Instruments. Proc. SEAC 2018, to appear.
 - Georg Zotti, Bernard Frischer, John Fillwalk. Serious Gaming for Virtual Archaeoastronomy. Studies in Digital Heritage 4(1), 2020.
