@@ -265,7 +265,7 @@ References
 In press:
 
 - Georg Zotti. A Virtual Park of Astronomical Instruments. Proc. SEAC 2018, to appear.
-- Georg Zotti, Bernard Frischer, John Fillwalk. Serious Gaming for Virtual Archaeoastronomy. Studies in Digital Heritage 4(1), 2020.
+- Georg Zotti, Bernard Frischer, John Fillwalk. Serious Gaming for Virtual Archaeoastronomy. Studies in Digital Heritage 4, 1, 51-74, 2020. <https://doi.org/10.14434/sdh.v4i1.31041> 
 
 License
 ======
