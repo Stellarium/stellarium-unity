@@ -266,6 +266,11 @@ References
   In Sonja Draxler, Max E. Lippitsch, and Gudrun Wolfschmidt, editors, Harmony and Symmetry (Proc. SEAC2018), volume 1 of SEAC Publications, chapter 10.1, pages 420–429. tredition, Hamburg, 2020. ISBN 978-3-347-14634-1.
 - Georg Zotti, Bernard Frischer, John Fillwalk. Serious Gaming for Virtual Archaeoastronomy. Studies in Digital Heritage 4, 1, 51-74, 2020. <https://doi.org/10.14434/sdh.v4i1.31041> 
 
+Uses
+======
+A continuation of my ideas can be seen in the developments from 2022 in Japan...
+- https://arcastrovr.org/en/
+
 License
 ======
 
