@@ -6,6 +6,10 @@ Georg Zotti Feb. 2017, updated May..August 2018, finalized April 2020.
 
 This is a collaboration between Georg Zotti (LBI ArchPro Vienna) and John Fillwalk, David Rodriguez and Neil Zehr (IDIA Lab, Ball State University) suggested by Bernard Frischer (Indiana University).
 
+### Example
+https://gzotti.github.io/InstrumentPark/index.html
+
+### Rationale
 We want to explore possibilities to link the high-quality sky simulation of Stellarium with the high quality and immersion factor of Unity virtual environments. 
 While Stellarium's Scenery3D plugin itself can already load a static OBJ landscape model with a few million triangles, there are applications 
 which require more interaction with the scene, or just more eye candy.
